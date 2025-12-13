@@ -1,8 +1,8 @@
-import { Float, OrbitControls } from "@react-three/drei";
-import { Astronaut } from "../components/Astronaut";
+import { Canvas, useFrame } from "@react-three/fiber";
 import HeroText from "../components/HeroText";
 import ParallaxBackground from "../components/ParallaxBackground";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Astronaut } from "../components/Astronaut";
+import { Float } from "@react-three/drei";
 import { useMediaQuery } from "react-responsive";
 import { easing } from "maath";
 import { Suspense } from "react";
@@ -11,7 +11,7 @@ import Loader from "../components/Loader";
 const Hero = () => {
   const isMobile = useMediaQuery({ maxWidth: 853 });
   return (
-    <section className="flex items-start justify-center md:items-start md:justify-start min-h-screen overflow-hidden c-space">
+    <section className="flex items-start justify-center min-h-screen overflow-hidden md:items-start md:justify-start c-space">
       <HeroText />
       <ParallaxBackground />
       <figure
@@ -28,30 +28,18 @@ const Hero = () => {
             </Float>
             <Rig />
           </Suspense>
-          <OrbitControls enableZoom={false} />
         </Canvas>
       </figure>
     </section>
   );
 };
+
 function Rig() {
   return useFrame((state, delta) => {
-    // Increased mouse sensitivity from /10 to /2.5 for more reactive movement
     easing.damp3(
       state.camera.position,
-      [state.mouse.x / 2.5, 1 + state.mouse.y / 2.5, 3],
-      0.25, // Reduced damping for faster response
-      delta
-    );
-    // Add camera rotation based on mouse for more immersive effect
-    easing.dampE(
-      state.camera.rotation,
-      [
-        (state.mouse.y * Math.PI) / 8,
-        (state.mouse.x * Math.PI) / 8,
-        0
-      ],
-      0.25,
+      [state.mouse.x / 10, 1 + state.mouse.y / 10, 3],
+      0.5,
       delta
     );
   });
