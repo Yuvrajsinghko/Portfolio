@@ -1,4 +1,4 @@
-import { Float,OrbitControls } from "@react-three/drei";
+import { Float, OrbitControls } from "@react-three/drei";
 import { Astronaut } from "../components/Astronaut";
 import HeroText from "../components/HeroText";
 import ParallaxBackground from "../components/ParallaxBackground";
@@ -28,7 +28,7 @@ const Hero = () => {
             </Float>
             <Rig />
           </Suspense>
-          <OrbitControls />
+          <OrbitControls enableZoom={false} />
         </Canvas>
       </figure>
     </section>
@@ -36,10 +36,22 @@ const Hero = () => {
 };
 function Rig() {
   return useFrame((state, delta) => {
+    // Increased mouse sensitivity from /10 to /2.5 for more reactive movement
     easing.damp3(
       state.camera.position,
-      [state.mouse.x / 10, 1 + state.mouse.y / 10, 3],
-      0.5,
+      [state.mouse.x / 2.5, 1 + state.mouse.y / 2.5, 3],
+      0.25, // Reduced damping for faster response
+      delta
+    );
+    // Add camera rotation based on mouse for more immersive effect
+    easing.dampE(
+      state.camera.rotation,
+      [
+        (state.mouse.y * Math.PI) / 8,
+        (state.mouse.x * Math.PI) / 8,
+        0
+      ],
+      0.25,
       delta
     );
   });

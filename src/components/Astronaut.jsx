@@ -9,7 +9,10 @@ Title: Tenhun Falling spaceman (FanArt)
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useMotionValue, useSpring } from "motion/react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame ,useThree} from "@react-three/fiber";
+import { easing } from "maath";
+
+
 
 export function Astronaut(props) {
   const group = useRef();
@@ -17,6 +20,7 @@ export function Astronaut(props) {
     "/models/tenhun_falling_spaceman_fanart.glb"
   );
   const { actions } = useAnimations(animations, group);
+  const { mouse } = useThree();
   useEffect(() => {
     if (animations.length > 0) {
       actions[animations[0].name]?.play();
@@ -28,8 +32,23 @@ export function Astronaut(props) {
   useEffect(() => {
     ySpring.set(-1);
   }, [ySpring]);
-  useFrame(() => {
+  useFrame((state,delta) => {
     group.current.position.y = ySpring.get();
+    // Add mouse-based rotation for more reactive following
+    const baseRotation = [-Math.PI / 2, -0.2, 2.2];
+    const mouseRotationX = mouse.y * 0.3; // Increased from negligible to 0.3
+    const mouseRotationY = mouse.x * 0.3; // Increased from negligible to 0.3
+    
+    easing.dampE(
+      group.current.rotation,
+      [
+        baseRotation[0] + mouseRotationX,
+        baseRotation[1] + mouseRotationY,
+        baseRotation[2]
+      ],
+      0.15, // Fast damping for responsive feel
+      delta
+    );
   });
   return (
     <group
