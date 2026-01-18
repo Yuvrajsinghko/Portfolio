@@ -227,18 +227,14 @@ export const mySocials = [
   {
     name: "Github",
     href: "https://github.com/Yuvrajsinghko",
-    icon: "/assets/logos/github.svg",
+    icon: "/assets/logos/github-white.svg",
   },
   {
     name: "Linkedin",
     href: "www.linkedin.com/in/yuvraj-singh-kot07",
     icon: "/assets/socials/linkedIn.svg",
   },
-  {
-    name: "Instagram",
-    href: "https://www.instagram.com/ali.sanatidev/reels/",
-    icon: "/assets/socials/instagram.svg",
-  },
+  
 ];
 
 export const experiences = [
